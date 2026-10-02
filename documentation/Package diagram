@@ -1,0 +1,44 @@
+src/main/java
+└── com.valentin.taskmanager
+    │
+    ├── controller
+    │   ├── AuthController.java
+    │   ├── TaskController.java
+    │   ├── UserController.java
+    │   └── CommentController.java
+    │
+    ├── service
+    │   ├── TaskService.java
+    │   ├── UserService.java
+    │   ├── CommentService.java
+    │   └── AuthService.java
+    │
+    ├── repository
+    │   ├── TaskRepository.java
+    │   ├── UserRepository.java
+    │   └── CommentRepository.java
+    │
+    ├── model
+    │   ├── Task.java
+    │   ├── User.java
+    │   ├── Comment.java
+    │   ├── Role.java
+    │   ├── Priority.java
+    │   └── Status.java
+    │
+    ├── dto
+    │   ├── TaskDTO.java
+    │   ├── UserDTO.java
+    │   ├── LoginRequest.java
+    │   └── RegisterRequest.java
+    │
+    ├── security
+    │   ├── SecurityConfig.java
+    │   ├── JwtFilter.java
+    │   └── JwtService.java
+    │
+    ├── exception
+    │   ├── ResourceNotFoundException.java
+    │   └── GlobalExceptionHandler.java
+    │
+    └── TaskManagementApplication.java

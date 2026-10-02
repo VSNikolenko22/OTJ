@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task Manager</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1f24;
+            margin: 0;
+            padding: 24px;
+            color: #e5e7eb;
+        }
+
+        h1 {
+            margin: 0 0 24px;
+            color: #f9fafb;
+            font-size: 30px;
+        }
+
+        h2 {
+            color: #f3f4f6;
+            margin: 0 0 14px;
+            font-size: 20px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            position: sticky;
+            top: 24px;
+        }
+
+        .content {
+            min-width: 0;
+        }
+
+        form,
+        .panel {
+            background-color: #2b2d33;
+            padding: 18px;
+            border-radius: 8px;
+            border: 1px solid #3a3d45;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #d1d5db;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 9px 10px;
+            border: 1px solid #4b5563;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            background-color: #202228;
+            color: #f9fafb;
+        }
+
+        input::placeholder {
+            color: #9ca3af;
+        }
+
+        button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            background-color: #b91c1c;
+            color: white;
+            cursor: pointer;
+            margin: 3px 4px 3px 0;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #dc2626;
+        }
+
+        button.delete {
+            background-color: #7f1d1d;
+        }
+
+        button.delete:hover {
+            background-color: #991b1b;
+        }
+
+        button.secondary {
+            background-color: #4b5563;
+        }
+
+        button.secondary:hover {
+            background-color: #6b7280;
+        }
+
+        #taskList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 16px;
+        }
+
+        #taskList > li {
+            background-color: #2b2d33;
+            padding: 18px;
+            border-radius: 8px;
+            border: 1px solid #3a3d45;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+        }
+
+        .task-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .task-info {
+            margin: 8px 0;
+            color: #d1d5db;
+            line-height: 1.4;
+        }
+
+        .comment-box {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid #3f424b;
+        }
+
+        .comments-list {
+            margin: 10px 0 0;
+            padding-left: 20px;
+            color: #e5e7eb;
+        }
+
+        .comments-list li {
+            margin-bottom: 6px;
+        }
+
+        @media (max-width: 900px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            #taskList {
+                grid-template-columns: 1fr;
+            }
+        }
+        body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: #1e1f24;
+    color: #f3f4f6;
+}
+
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    max-width: 1500px;
+    margin: 0 auto 24px;
+    padding: 18px 22px;
+    background-color: #2b2d33;
+    border: 1px solid #3a3d45;
+    border-radius: 8px;
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: 30px;
+    letter-spacing: 0;
+}
+
+.app-header p {
+    margin: 6px 0 0;
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+.logout-form {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+}
+
+.logout-form button {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.layout {
+    max-width: 1500px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 390px minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.content {
+    min-width: 0;
+}
+
+form,
+.panel {
+    background-color: #2b2d33;
+    border: 1px solid #3a3d45;
+    border-radius: 8px;
+    padding: 18px;
+}
+
+input,
+select {
+    max-width: 100%;
+}
+
+#taskList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 16px;
+}
+
+#taskList > li {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.task-title,
+.task-info {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.task-title {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.task-description {
+    color: #d1d5db;
+    margin-bottom: 12px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.task-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0 14px;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 5px 9px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.priority-high {
+    background-color: #7f1d1d;
+    color: #fecaca;
+}
+
+.priority-medium {
+    background-color: #78350f;
+    color: #fde68a;
+}
+
+.priority-low {
+    background-color: #374151;
+    color: #d1d5db;
+}
+
+.status-todo {
+    background-color: #3f3f46;
+    color: #e4e4e7;
+}
+
+.status-in-progress {
+    background-color: #1e3a5f;
+    color: #bfdbfe;
+}
+
+.status-done {
+    background-color: #14532d;
+    color: #bbf7d0;
+}
+
+.deadline-badge {
+    background-color: #3a2a2a;
+    color: #fecaca;
+}
+
+.task-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.comment-box input {
+    width: 100%;
+}
+
+@media (max-width: 950px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+}
+        .task-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(120px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.task-stats div {
+    background-color: #2b2d33;
+    border: 1px solid #3a3d45;
+    border-radius: 8px;
+    padding: 14px;
+    color: #d1d5db;
+}
+
+.task-stats strong {
+    color: #ffffff;
+    font-size: 20px;
+}
+
+@media (max-width: 700px) {
+    .task-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+    </style>
+
+
+
+
+</head>
+<body>
+<header class="app-header">
+    <div>
+        <h1>Task Manager</h1>
+        <p>Manage tasks, priorities, deadlines and comments</p>
+    </div>
+
+    <form action="/logout" method="post" class="logout-form">
+        <button type="submit" class="delete">Logout</button>
+    </form>
+</header>
+
+<h2>Create Task</h2>
+
+<form id="taskForm">
+    <div>
+        <label for="title">Title:</label>
+        <input id="title" type="text" required>
+    </div>
+
+    <div>
+        <label for="description">Description:</label>
+        <input id="description" type="text">
+    </div>
+
+    <div>
+        <label for="priority">Priority:</label>
+        <select id="priority">
+            <option value="LOW">Low</option>
+            <option value="MEDIUM" selected>Medium</option>
+            <option value="HIGH">High</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="deadline">Deadline:</label>
+        <input id="deadline" type="date">
+    </div>
+
+    <button id="submitButton" type="submit">Add Task</button>
+    <button id="cancelEditButton" type="button" onclick="cancelEdit()" style="display: none;">Cancel Edit</button>
+</form>
+
+<h2>Filters</h2>
+
+<div class="panel">
+    <label for="statusFilter">Status:</label>
+    <select id="statusFilter" onchange="filterByStatus()">
+        <option value="">All</option>
+        <option value="TODO">TODO</option>
+        <option value="IN_PROGRESS">IN_PROGRESS</option>
+        <option value="DONE">DONE</option>
+    </select>
+</div>
+
+<div>
+    <label for="priorityFilter">Priority:</label>
+    <select id="priorityFilter" onchange="filterByPriority()">
+        <option value="">All</option>
+        <option value="LOW">LOW</option>
+        <option value="MEDIUM">MEDIUM</option>
+        <option value="HIGH">HIGH</option>
+    </select>
+</div>
+
+<div>
+    <label for="searchInput">Search by title:</label>
+    <input id="searchInput" type="text">
+    <button onclick="searchByTitle()">Search</button>
+    <button onclick="loadTasks()">Reset</button>
+</div>
+</div>
+
+
+
+
+<h2>Sorting</h2>
+
+<button type="button" onclick="sortByDeadline()">Sort by Deadline</button>
+<button type="button" onclick="sortByPriority()">Sort by Priority</button>
+
+
+    </aside>
+
+<main class="content">
+
+    <div class="task-stats">
+        <div>Total: <strong id="totalCount">0</strong></div>
+        <div>TODO: <strong id="todoCount">0</strong></div>
+        <div>In Progress: <strong id="inProgressCount">0</strong></div>
+        <div>Done: <strong id="doneCount">0</strong></div>
+    </div>
+
+<h2>Tasks</h2>
+<ul id="taskList"></ul>
+</main>
+</div>
+
+<script>
+const taskList = document.getElementById("taskList");
+const taskForm = document.getElementById("taskForm");
+let editingTaskId = null;
+async function loadTasks() {
+    const response = await fetch("/api/tasks");
+    const tasks = await response.json();
+
+    showTasks(tasks);
+}
+
+function showTasks(tasks) {
+    taskList.innerHTML = "";
+    updateTaskStats(tasks);
+if (tasks.length === 0) {
+    taskList.innerHTML = "<li>No tasks found</li>";
+    return;
+}
+    tasks.forEach(task => {
+        const item = document.createElement("li");
+
+        item.innerHTML = `
+    <div class="task-title">${task.title}</div>
+
+    <div class="task-description">
+        ${task.description || "No description"}
+    </div>
+
+    <div class="task-meta">
+        <span class="badge ${getPriorityClass(task.priority)}">${task.priority}</span>
+        <span class="badge ${getStatusClass(task.status)}">${formatStatus(task.status)}</span>
+        <span class="badge deadline-badge">Deadline: ${task.deadline || "No deadline"}</span>
+    </div>
+
+    <div class="task-actions">
+        <button type="button" onclick="editTask(${task.id})">Edit</button>
+        <button type="button" onclick="changeStatus(${task.id}, 'TODO')" class="secondary">TODO</button>
+        <button type="button" onclick="changeStatus(${task.id}, 'IN_PROGRESS')" class="secondary">In Progress</button>
+        <button type="button" onclick="changeStatus(${task.id}, 'DONE')" class="secondary">Done</button>
+        <button type="button" onclick="deleteTask(${task.id})" class="delete">Delete</button>
+    </div>
+
+    <div class="comment-box">
+        <input id="commentInput-${task.id}" type="text" placeholder="Add comment">
+        <button type="button" onclick="addComment(${task.id})">Add Comment</button>
+        <ul id="comments-${task.id}" class="comments-list"></ul>
+    </div>
+`;
+
+        taskList.appendChild(item);
+        loadComments(task.id);
+    });
+}
+
+taskForm.addEventListener("submit", async function (event) {
+event.preventDefault();
+
+const task = {
+    title: document.getElementById("title").value,
+    description: document.getElementById("description").value,
+    priority: document.getElementById("priority").value,
+    status: "TODO",
+    deadline: document.getElementById("deadline").value
+};
+
+if (editingTaskId === null) {
+    await fetch("/api/tasks", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(task)
+    });
+} else {
+    await fetch(`/api/tasks/${editingTaskId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(task)
+    });
+
+    editingTaskId = null;
+    document.getElementById("submitButton").textContent = "Add Task";
+    document.getElementById("cancelEditButton").style.display = "none";
+}
+
+
+taskForm.reset();
+
+loadTasks();
+});
+
+async function deleteTask(id) {
+    await fetch(`/api/tasks/${id}`, {
+        method: "DELETE"
+    });
+
+    loadTasks();
+}
+
+async function changeStatus(id, status) {
+    await fetch(`/api/tasks/${id}/status?status=${status}`, {
+        method: "PATCH"
+    });
+
+    loadTasks();
+}
+
+async function filterByStatus() {
+    const status = document.getElementById("statusFilter").value;
+
+    if (status === "") {
+        loadTasks();
+        return;
+    }
+
+    const response = await fetch(`/api/tasks/filter/status?status=${status}`);
+    const tasks = await response.json();
+
+    showTasks(tasks);
+}
+
+async function filterByPriority() {
+    const priority = document.getElementById("priorityFilter").value;
+
+    if (priority === "") {
+        loadTasks();
+        return;
+    }
+
+    const response = await fetch(`/api/tasks/filter/priority?priority=${priority}`);
+    const tasks = await response.json();
+
+    showTasks(tasks);
+}
+
+
+
+async function searchByTitle() {
+    const keyword = document.getElementById("searchInput").value.trim();
+
+    if (keyword === "") {
+        loadTasks();
+        return;
+    }
+
+    const response = await fetch(`/api/tasks/search?keyword=${encodeURIComponent(keyword)}`);
+    const tasks = await response.json();
+
+    showTasks(tasks);
+}
+async function editTask(id) {
+const response = await fetch(`/api/tasks/${id}`);
+const task = await response.json();
+
+document.getElementById("title").value = task.title;
+document.getElementById("description").value = task.description;
+document.getElementById("priority").value = task.priority;
+document.getElementById("deadline").value = task.deadline;
+document.getElementById("cancelEditButton").style.display = "inline-block";
+
+
+editingTaskId = id;
+document.getElementById("submitButton").textContent = "Save Changes";
+}
+
+function cancelEdit() {
+editingTaskId = null;
+taskForm.reset();
+document.getElementById("submitButton").textContent = "Add Task";
+document.getElementById("cancelEditButton").style.display = "none";
+}
+
+async function loadComments(taskId) {
+const response = await fetch(`/api/tasks/${taskId}/comments`);
+const comments = await response.json();
+
+const commentsList = document.getElementById(`comments-${taskId}`);
+commentsList.innerHTML = "";
+
+comments.forEach(comment => {
+    const item = document.createElement("li");
+
+    item.innerHTML = `
+${comment.text}
+<button type="button" onclick="deleteComment(${comment.id})" class="delete">Delete Comment</button>
+`;
+
+    commentsList.appendChild(item);
+});
+}
+
+async function addComment(taskId) {
+const input = document.getElementById(`commentInput-${taskId}`);
+const text = input.value.trim();
+
+if (text === "") {
+    return;
+}
+
+await fetch(`/api/tasks/${taskId}/comments`, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        text: text
+    })
+});
+
+input.value = "";
+loadComments(taskId);
+}
+
+async function deleteComment(commentId) {
+await fetch(`/api/comments/${commentId}`, {
+    method: "DELETE"
+});
+
+loadTasks();
+}
+async function sortByDeadline() {
+const response = await fetch("/api/tasks/sort/deadline");
+const tasks = await response.json();
+
+showTasks(tasks);
+}
+
+async function sortByPriority() {
+const response = await fetch("/api/tasks/sort/priority");
+const tasks = await response.json();
+
+showTasks(tasks);
+}
+function getPriorityClass(priority) {
+    if (priority === "HIGH") {
+        return "priority-high";
+    }
+
+    if (priority === "MEDIUM") {
+        return "priority-medium";
+    }
+
+    return "priority-low";
+}
+
+function getStatusClass(status) {
+    if (status === "DONE") {
+        return "status-done";
+    }
+
+    if (status === "IN_PROGRESS") {
+        return "status-in-progress";
+    }
+
+    return "status-todo";
+}
+
+function formatStatus(status) {
+    if (status === "IN_PROGRESS") {
+        return "IN PROGRESS";
+    }
+
+    return status;
+}
+function updateTaskStats(tasks) {
+    const total = tasks.length;
+    let todo = 0;
+    let inProgress = 0;
+    let done = 0;
+
+    tasks.forEach(task => {
+        if (task.status === "TODO") {
+            todo++;
+        }
+
+        if (task.status === "IN_PROGRESS") {
+            inProgress++;
+        }
+
+        if (task.status === "DONE") {
+            done++;
+        }
+    });
+
+    document.getElementById("totalCount").textContent = total;
+    document.getElementById("todoCount").textContent = todo;
+    document.getElementById("inProgressCount").textContent = inProgress;
+    document.getElementById("doneCount").textContent = done;
+}
+
+loadTasks();
+</script>
+</body>
+</html>
